@@ -286,33 +286,33 @@ export function InventoryPage() {
                             </div>
 
                             {/* Input Fields */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'flex-end' }}>
-                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <p style={{ fontSize: '11px', color: colors.textSecondary, marginBottom: '4px', textTransform: 'uppercase', fontWeight: '600' }}>Restaurant</p>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <p style={{ fontSize: '11px', color: colors.textSecondary, marginBottom: '6px', textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.05em' }}>Restaurant</p>
                                 <input
                                   key={`rest-${itemKey}`}
                                   type="number"
                                   step="0.5"
                                   value={restaurant}
                                   onChange={(e) => handleInputChange(itemKey, 'qty_restaurant', e.target.value)}
-                                  inputMode="numeric"
+                                  inputMode="decimal"
                                   onFocus={(e) => e.target.select()}
-                                  style={{...styles.input, width: '64px', height: '44px', textAlign: 'center', padding: '8px'}}
+                                  style={{...styles.input, width: '100%', height: '52px', textAlign: 'center', padding: '8px', fontSize: '18px', fontWeight: '600'}}
                                   placeholder="0"
                                 />
                               </div>
 
-                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <p style={{ fontSize: '11px', color: colors.textSecondary, marginBottom: '4px', textTransform: 'uppercase', fontWeight: '600' }}>Office</p>
+                              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <p style={{ fontSize: '11px', color: colors.textSecondary, marginBottom: '6px', textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.05em' }}>Office</p>
                                 <input
                                   key={`office-${itemKey}`}
                                   type="number"
                                   step="0.5"
                                   value={office}
                                   onChange={(e) => handleInputChange(itemKey, 'qty_office', e.target.value)}
-                                  inputMode="numeric"
+                                  inputMode="decimal"
                                   onFocus={(e) => e.target.select()}
-                                  style={{...styles.input, width: '64px', height: '44px', textAlign: 'center', padding: '8px'}}
+                                  style={{...styles.input, width: '100%', height: '52px', textAlign: 'center', padding: '8px', fontSize: '18px', fontWeight: '600'}}
                                   placeholder="0"
                                 />
                               </div>
@@ -334,10 +334,8 @@ export function InventoryPage() {
               right: 0,
               backgroundColor: colors.bgBase,
               borderTop: `1px solid ${colors.borderSubtle}`,
-              padding: '16px',
-              paddingBottom: 'max(16px, env(safe-area-inset-bottom))',
-              maxWidth: '900px',
-              margin: '0 auto',
+              padding: '12px 16px',
+              paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
             }}>
               <button
                 type="submit"
