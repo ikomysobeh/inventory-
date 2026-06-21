@@ -17,6 +17,9 @@ export default function PasswordInput({
                 type={showPassword ? 'text' : 'password'}
                 className={cn('pr-10', className)}
                 ref={ref}
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 {...props}
             />
             <button
