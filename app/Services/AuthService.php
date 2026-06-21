@@ -17,7 +17,25 @@ class AuthService
     {
         $user = User::where('email', $email)->first();
 
-        if (!$user || !Hash::check($password, $user->password)) {
+        Log::info('[AuthService] User lookup', [
+            'email'     => $email,
+            'found'     => $user ? true : false,
+            'is_active' => $user?->is_active,
+        ]);
+
+        if (!$user) {
+            Log::warning('[AuthService] No user found for email', ['email' => $email]);
+            return null;
+        }
+
+        $passwordMatch = Hash::check($password, $user->password);
+        Log::info('[AuthService] Password check', [
+            'email'          => $email,
+            'password_match' => $passwordMatch,
+            'password_len'   => strlen($password),
+        ]);
+
+        if (!$passwordMatch) {
             Log::warning('Login failed: invalid credentials', ['email' => $email]);
             return null;
         }
