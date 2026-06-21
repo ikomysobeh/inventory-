@@ -137,10 +137,11 @@ export const styles = {
     padding: '10px 12px',
     color: colors.textPrimary,
     fontSize: '14px',
-    minWidth: '150px',
+    minWidth: '0',
     minHeight: '40px',
     outline: 'none',
     transition: 'border-color 0.15s, box-shadow 0.15s',
+    boxSizing: 'border-box' as const,
   },
 
   inputFocus: {

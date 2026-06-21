@@ -303,7 +303,7 @@ export function Layout({ children, title }: LayoutProps) {
           </header>
         )}
 
-        <main style={{ flex: 1, padding: '24px 20px', maxWidth: '1100px', width: '100%' }}>
+        <main style={{ flex: 1, padding: '16px', maxWidth: '1100px', width: '100%', boxSizing: 'border-box' as const, overflowX: 'hidden' }}>
           {title && (
             <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: colors.textPrimary, marginBottom: '24px' }}>
               {title}

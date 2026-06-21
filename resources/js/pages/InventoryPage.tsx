@@ -250,7 +250,7 @@ export function InventoryPage() {
 
                   {/* Category Items */}
                   {isExpanded && (
-                    <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px', marginLeft: '4px' }}>
+                    <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       {category.items.map((item, idx) => {
                         const itemKey = item.item_id.toString();
                         const isFilled = entries[itemKey];
