@@ -1,0 +1,25 @@
+{
+  "name": "Clean Kitchen Inventory",
+  "short_name": "Inventory",
+  "description": "Restaurant inventory management for the team",
+  "start_url": "/inventory",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f1117",
+  "theme_color": "#f97316",
+  "categories": ["food", "productivity"],
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
