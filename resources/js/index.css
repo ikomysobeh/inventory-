@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Ensure safe-area padding on iOS PWA */
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Remove default number input spinners on mobile for cleaner look */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

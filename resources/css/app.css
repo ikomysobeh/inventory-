@@ -1,0 +1,330 @@
+@import 'tailwindcss';
+
+/* ============================================
+   DESIGN SYSTEM - Restaurant Inventory
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Backgrounds */
+  --bg-base:        #0f1117;
+  --bg-surface:     #181c27;
+  --bg-card:        #1e2333;
+  --bg-input:       #252b3b;
+  --bg-hover:       #2a3045;
+
+  /* Borders */
+  --border-subtle:  #2e3549;
+  --border-strong:  #3d4666;
+
+  /* Text */
+  --text-primary:   #f0f2f8;
+  --text-secondary: #8892a4;
+  --text-muted:     #4e5770;
+
+  /* Accent - Kitchen Flame Orange */
+  --accent:         #f97316;
+  --accent-soft:    #7c3a0f;
+  --accent-hover:   #fb923c;
+
+  /* Status Colors */
+  --status-low:     #ef4444;
+  --status-low-bg:  #450a0a;
+  --status-ok:      #22c55e;
+  --status-ok-bg:   #052e16;
+  --status-warn:    #f59e0b;
+  --status-warn-bg: #431407;
+
+  /* Semantic */
+  --danger:         #f43f5e;
+  --danger-bg:      #4c0519;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+html,
+body {
+  background-color: #0f1117;
+  color: #f0f2f8;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  @apply border-slate-400;
+}
+
+/* Number inputs use mono font */
+input[type="number"],
+.font-mono {
+  font-family: 'DM Mono', monospace;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes savedPulse {
+  0% {
+    background-color: #22c55e;
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    background-color: #f97316;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.3s ease both;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.15s ease;
+}
+
+/* Stagger animation delays */
+.animate-fade-slide-up:nth-child(1) { animation-delay: 0.05s; }
+.animate-fade-slide-up:nth-child(2) { animation-delay: 0.10s; }
+.animate-fade-slide-up:nth-child(3) { animation-delay: 0.15s; }
+.animate-fade-slide-up:nth-child(4) { animation-delay: 0.20s; }
+.animate-fade-slide-up:nth-child(5) { animation-delay: 0.25s; }
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md font-semibold text-sm transition-all duration-150 cursor-pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-primary {
+  @apply bg-orange-primary text-white hover:bg-orange-hover;
+}
+
+.btn-ghost {
+  @apply bg-transparent text-stone-300 border border-slate-400 hover:bg-slate-550 hover:text-stone-100;
+}
+
+.btn-danger {
+  @apply bg-rose-danger-bg text-rose-danger border border-rose-danger hover:bg-opacity-80;
+}
+
+.btn-lg {
+  @apply h-14 text-base;
+}
+
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* ============================================
+   INPUT STYLES
+   ============================================ */
+
+.input-wrapper {
+  @apply flex flex-col gap-1.5;
+}
+
+.input-label {
+  @apply text-2xs font-semibold uppercase tracking-wider text-stone-300;
+}
+
+.input {
+  @apply h-11 px-3.5 bg-slate-600 border border-slate-400 rounded-md text-stone-100 text-sm transition-all duration-150;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.input:focus {
+  @apply outline-none border-orange-primary;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.input::placeholder {
+  @apply text-stone-400;
+}
+
+.input[type="number"] {
+  font-family: 'DM Mono', monospace;
+}
+
+/* ============================================
+   BADGE STYLES
+   ============================================ */
+
+.badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded-full text-2xs font-semibold uppercase tracking-tight;
+}
+
+.badge-low {
+  @apply bg-red-status-bg text-red-status;
+}
+
+.badge-ok {
+  @apply bg-green-status-bg text-green-status;
+}
+
+.badge-warn {
+  @apply bg-amber-status-bg text-amber-status;
+}
+
+.badge-manager {
+  @apply bg-orange-light text-orange-primary;
+}
+
+.badge-employee {
+  @apply bg-slate-600 text-stone-300;
+}
+
+.badge-inactive {
+  @apply bg-slate-600 text-stone-400;
+}
+
+/* ============================================
+   CARD STYLES
+   ============================================ */
+
+.card {
+  @apply bg-slate-700 border border-slate-400 rounded-lg p-6;
+}
+
+.card-header {
+  @apply mb-4 pb-4 border-b border-slate-400;
+}
+
+.card-title {
+  @apply text-xl font-semibold text-stone-100;
+}
+
+/* ============================================
+   TABLE STYLES
+   ============================================ */
+
+.table-wrapper {
+  @apply overflow-x-auto;
+}
+
+.table-row {
+  @apply h-13 border-b border-slate-400 transition-all duration-150;
+}
+
+.table-row:hover {
+  @apply bg-slate-550;
+}
+
+.table-row.active {
+  @apply bg-slate-550;
+}
+
+.table-cell {
+  @apply px-4 py-3 text-sm text-stone-100;
+}
+
+.table-cell-meta {
+  @apply text-2xs text-stone-300 uppercase tracking-wider font-semibold;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.form-grid {
+  @apply grid grid-cols-1 gap-4;
+}
+
+.form-grid-2 {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.form-error {
+  @apply text-2xs text-rose-danger mt-1;
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+@media (max-width: 1023px) {
+  .hide-mobile {
+    @apply hidden;
+  }
+}
+
+@media (min-width: 1024px) {
+  .show-desktop-only {
+    @apply block;
+  }
+}
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.637 0.237 25.331);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.985 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
