@@ -1,11 +1,8 @@
 import axios from 'axios';
 
-// VITE_API_URL wins when explicitly set (e.g. a real production domain).
-// Otherwise derive from the current host so the app works on any device/IP
-// without hardcoding localhost or a specific address in the build.
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
-  `${window.location.origin}/projacet/managous/inventory/public/api`;
+  `${window.location.origin}/api`;
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
