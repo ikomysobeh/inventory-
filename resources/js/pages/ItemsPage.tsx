@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { Package } from 'lucide-react';
 import { api } from '../lib/api';
 import { Layout } from '../components/Layout';
 import { PageHeader } from '../components/ui/PageHeader';
@@ -124,7 +125,7 @@ export function ItemsPage() {
           { header: 'Category', render: (r: Item) => r.category.name },
           { header: 'Supplier', render: (r: Item) => r.supplier?.name ?? <span style={{ color: '#4e5770' }}>—</span> },
           { header: 'Unit',     align: 'center', render: (r: Item) => r.unit ? <span style={{ fontFamily: "'DM Mono', monospace" }}>{r.unit}</span> : <span style={{ color: '#4e5770' }}>—</span> },
-          { header: 'Par',      align: 'center', render: (r: Item) => <span style={{ fontFamily: "'DM Mono', monospace" }}>{r.par_level ?? '—'}</span> },
+          { header: 'Must Have', align: 'center', render: (r: Item) => <span style={{ fontFamily: "'DM Mono', monospace" }}>{r.par_level ?? '—'}</span> },
           { header: 'Status',   align: 'center', render: (r: Item) => <StatusBadge variant={r.is_active ? 'active' : 'inactive'}>{r.is_active ? 'Active' : 'Inactive'}</StatusBadge> },
           { header: 'Actions',  align: 'center', render: (r: Item) => (
             <RowActions
@@ -141,7 +142,7 @@ export function ItemsPage() {
         isOpen={isOpen}
         title={editingId ? 'Edit Item' : 'Add New Item'}
         subtitle={editingId ? 'Update item details' : 'Create a new inventory item'}
-        icon="📦"
+        icon={<Package size={18} />}
         onClose={handleClose}
         onSubmit={(e) => { e.preventDefault(); saveMutation.mutate(formData); }}
         isSaving={saveMutation.isPending}
@@ -154,7 +155,7 @@ export function ItemsPage() {
           <FormSelect label="Category" value={formData.category_id} onChange={set('category_id')} placeholder="Select Category" options={categories.map((c: Category) => ({ value: c.id, label: c.name }))} required containerStyle={{ marginBottom: 0 }} />
           <FormSelect label="Supplier" value={formData.supplier_id} onChange={set('supplier_id')} placeholder="No supplier" options={suppliers.map((s: Supplier) => ({ value: s.id, label: s.name }))} containerStyle={{ marginBottom: 0 }} />
           <FormInput label="Unit" value={formData.unit} onChange={set('unit')} placeholder="kg, L, pcs…" containerStyle={{ marginBottom: 0 }} />
-          <FormInput label="Par Level" type="number" value={formData.par_level} onChange={set('par_level')} placeholder="0" containerStyle={{ marginBottom: 0 }} />
+          <FormInput label="Must Have" type="number" value={formData.par_level} onChange={set('par_level')} placeholder="0" containerStyle={{ marginBottom: 0 }} />
           <FormSelect label="Status" value={formData.is_active} onChange={set('is_active')} options={[{ value: '1', label: 'Active' }, { value: '0', label: 'Inactive' }]} containerStyle={{ marginBottom: 0 }} />
           <FormInput label="Notes" value={formData.notes} onChange={set('notes')} placeholder="Optional notes…" containerStyle={{ marginBottom: 0 }} />
         </div>

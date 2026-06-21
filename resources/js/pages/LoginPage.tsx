@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { Flame } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 
 export function LoginPage() {
-  const [email, setEmail] = useState('manager@restaurant.local');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuthStore();
@@ -134,7 +135,9 @@ export function LoginPage() {
         <div style={styles.card}>
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <div style={{ fontSize: '36px', marginBottom: '12px' }}>🔥</div>
+            <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'center' }}>
+              <Flame size={36} color="#f97316" />
+            </div>
             <h1 style={styles.heading1}>Restaurant</h1>
             <h2 style={styles.heading2}>Inventory</h2>
             <p style={{ fontSize: '14px', color: '#8892a4' }}>Management System</p>
@@ -212,30 +215,6 @@ export function LoginPage() {
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #2e3549' }}>
-            <p style={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#8892a4', marginBottom: '12px' }}>
-              📝 Demo Credentials
-            </p>
-            <div style={styles.credentialsBox}>
-              <p style={{ fontSize: '12px', color: '#f0f2f8', margin: '0 0 8px 0' }}>
-                <span style={{ color: '#8892a4' }}>Email:</span> manager@restaurant.local
-              </p>
-              <p style={{ fontSize: '12px', color: '#f0f2f8', margin: '0' }}>
-                <span style={{ color: '#8892a4' }}>Password:</span> password
-              </p>
-            </div>
-          </div>
-
-          {/* API Info */}
-          <div style={styles.apiBox}>
-            <p style={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#f97316', marginBottom: '4px' }}>
-              🔗 API Connection
-            </p>
-            <p style={{ fontSize: '12px', color: '#8892a4', margin: '0' }}>
-              http://127.0.0.1:8000/api
-            </p>
-          </div>
         </div>
       </div>
 

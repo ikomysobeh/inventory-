@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { Truck } from 'lucide-react';
 import { api } from '../lib/api';
 import { Layout } from '../components/Layout';
 import { PageHeader } from '../components/ui/PageHeader';
@@ -99,7 +100,7 @@ export function SuppliersPage() {
         isOpen={isOpen}
         title={editingId ? 'Edit Supplier' : 'Add New Supplier'}
         subtitle={editingId ? 'Update supplier details' : 'Add a new supplier'}
-        icon="🚚"
+        icon={<Truck size={18} />}
         onClose={handleClose}
         onSubmit={(e) => { e.preventDefault(); saveMutation.mutate(formData); }}
         isSaving={saveMutation.isPending}

@@ -73,7 +73,7 @@ function TrendModal({ item, onClose }: { item: AuditRow; onClose: () => void }) 
               📈 {item.item_name}
             </h2>
             <p style={{ fontSize: '13px', color: colors.textSecondary, marginTop: '4px' }}>
-              Last 30 days · Par level: <span style={{ color: colors.accent, fontWeight: '600' }}>{item.par_level ?? '—'}</span> {item.unit}
+              Last 30 days · Must have: <span style={{ color: colors.accent, fontWeight: '600' }}>{item.par_level ?? '—'}</span> {item.unit}
             </p>
           </div>
           <button
@@ -176,7 +176,7 @@ export function HistoryPage() {
   const rows = audit?.data ?? [];
 
   return (
-    <Layout title="📜 Inventory History">
+    <Layout title="Inventory History">
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
         {/* Filters */}

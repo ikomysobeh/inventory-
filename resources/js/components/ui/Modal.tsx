@@ -4,7 +4,7 @@ interface ModalProps {
   isOpen: boolean;
   title: string;
   subtitle?: string;
-  icon?: string;
+  icon?: React.ReactNode;
   onClose: () => void;
   onSubmit: (e: React.FormEvent) => void;
   isSaving?: boolean;

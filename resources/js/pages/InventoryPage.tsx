@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { Save, Leaf, Milk, Beef, Wine, Package } from 'lucide-react';
 import { api } from '../lib/api';
 import { Layout } from '../components/Layout';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
@@ -23,11 +24,14 @@ interface ChecklistItem {
     item_id: number;
     name: string;
     par_level: number;
+    supplier_id: number | null;
+    supplier_name: string | null;
   }>;
 }
 
 export function InventoryPage() {
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [supplierFilter, setSupplierFilter] = useState<string>('all');
   const [entries, setEntries] = useState<Record<string, { qty_restaurant: number; qty_office: number }>>({});
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
   const queryClient = useQueryClient();
@@ -106,10 +110,6 @@ export function InventoryPage() {
     }));
   };
 
-  const totalItems = checklist?.reduce((sum, cat) => sum + cat.items.length, 0) || 0;
-  const filledItems = Object.keys(entries).length;
-  const progressPercent = totalItems > 0 ? (filledItems / totalItems) * 100 : 0;
-
   const toggleCategory = (categoryName: string) => {
     setExpandedCategories(prev => ({
       ...prev,
@@ -117,13 +117,40 @@ export function InventoryPage() {
     }));
   };
 
+  // Build unique supplier list from checklist data
+  const suppliers = checklist
+    ? Array.from(
+        new Map(
+          checklist
+            .flatMap(cat => cat.items)
+            .filter(item => item.supplier_id !== null)
+            .map(item => [item.supplier_id, item.supplier_name])
+        ).entries()
+      ).sort((a, b) => (a[1] ?? '').localeCompare(b[1] ?? ''))
+    : [];
+
+  // Apply supplier filter to checklist (drop empty categories)
+  const filteredChecklist = checklist
+    ?.map(cat => ({
+      ...cat,
+      items: supplierFilter === 'all'
+        ? cat.items
+        : cat.items.filter(item => String(item.supplier_id) === supplierFilter),
+    }))
+    .filter(cat => cat.items.length > 0);
+
+  const totalItems = filteredChecklist?.reduce((sum, cat) => sum + cat.items.length, 0) || 0;
+  const filteredItemIds = new Set(filteredChecklist?.flatMap(cat => cat.items.map(i => i.item_id.toString())) ?? []);
+  const filledItems = Object.keys(entries).filter(id => filteredItemIds.has(id)).length;
+  const progressPercent = totalItems > 0 ? (filledItems / totalItems) * 100 : 0;
+
   return (
-    <Layout title="📋 Inventory Count">
+    <Layout title="Inventory Count">
       <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {/* Header Card */}
         <div style={styles.card}>
-          <div style={{...styles.flexBetween, marginBottom: '12px'}}>
-            <div style={{ flex: 1, minWidth: '150px' }}>
+          <div style={{ display: 'flex', gap: '12px', marginBottom: '12px', flexWrap: 'wrap' as const, alignItems: 'flex-end' }}>
+            <div style={{ flex: 1, minWidth: '140px' }}>
               <p style={styles.cardLabel}>Date</p>
               <input
                 type="date"
@@ -132,7 +159,20 @@ export function InventoryPage() {
                 style={{...styles.input, marginTop: '8px', width: '100%'}}
               />
             </div>
-            <div style={{ textAlign: 'right', minWidth: '100px' }}>
+            <div style={{ flex: 1, minWidth: '140px' }}>
+              <p style={styles.cardLabel}>Supplier</p>
+              <select
+                value={supplierFilter}
+                onChange={(e) => setSupplierFilter(e.target.value)}
+                style={{...styles.input, marginTop: '8px', width: '100%', cursor: 'pointer'}}
+              >
+                <option value="all">All Suppliers</option>
+                {suppliers.map(([id, name]) => (
+                  <option key={id} value={String(id)}>{name}</option>
+                ))}
+              </select>
+            </div>
+            <div style={{ textAlign: 'right', minWidth: '80px' }}>
               <p style={styles.cardLabel}>Progress</p>
               <p style={{ fontSize: '20px', fontWeight: 'bold', color: colors.accent, marginTop: '8px', fontFamily: "'DM Mono', monospace" }}>{filledItems}/{totalItems}</p>
             </div>
@@ -149,25 +189,29 @@ export function InventoryPage() {
         {/* Checklist */}
         {isLoading ? (
           <LoadingSpinner />
-        ) : checklist?.length === 0 ? (
+        ) : filteredChecklist?.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '64px 16px', color: colors.textSecondary }}>
             <p style={{ fontSize: '48px', marginBottom: '16px' }}>📋</p>
-            <p style={{ fontSize: '18px', fontWeight: '600', color: colors.textPrimary }}>No active items</p>
-            <p style={{ marginTop: '8px', fontSize: '14px' }}>Ask your manager to add items to the inventory.</p>
+            <p style={{ fontSize: '18px', fontWeight: '600', color: colors.textPrimary }}>
+              {supplierFilter === 'all' ? 'No active items' : 'No items for this supplier'}
+            </p>
+            <p style={{ marginTop: '8px', fontSize: '14px' }}>
+              {supplierFilter === 'all' ? 'Ask your manager to add items to the inventory.' : 'Try selecting a different supplier.'}
+            </p>
           </div>
         ) : (
           <form onSubmit={(e) => {
             e.preventDefault();
             saveMutation.mutate();
           }} style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '96px' }}>
-            {checklist?.map((category) => {
+            {filteredChecklist?.map((category) => {
               const isExpanded = expandedCategories[category.name] !== false;
-              const categoryEmoji = {
-                'Vegetables & Produce': '🥦',
-                'Dairy & Pantry': '🧀',
-                'Meat & Protein': '🥩',
-                'Beverages': '🥤',
-              }[category.name] || '📦';
+              const CategoryIcon = ({
+                'Vegetables & Produce': Leaf,
+                'Dairy & Pantry': Milk,
+                'Meat & Protein': Beef,
+                'Beverages': Wine,
+              } as Record<string, typeof Package>)[category.name] ?? Package;
 
               return (
                 <div key={category.name}>
@@ -193,7 +237,7 @@ export function InventoryPage() {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '20px' }}>{categoryEmoji}</span>
+                      <CategoryIcon size={20} color={isExpanded ? colors.accent : colors.textSecondary} />
                       <h2 style={{ fontSize: '16px', fontWeight: '600', color: colors.textPrimary }}>{category.name}</h2>
                       <span style={styles.badgeActive}>
                         {category.items.length}
@@ -236,7 +280,7 @@ export function InventoryPage() {
                               <div style={{ flex: 1 }}>
                                 <p style={{ fontSize: '14px', fontWeight: '600', color: colors.textPrimary }}>{item.name}</p>
                                 <p style={{ fontSize: '12px', color: colors.textSecondary, marginTop: '4px' }}>
-                                  Par: <span style={{ fontFamily: "\"DM Mono\", monospace", fontWeight: 'bold', color: colors.accent }}>{item.par_level}</span>
+                                  Must Have: <span style={{ fontFamily: "\"DM Mono\", monospace", fontWeight: 'bold', color: colors.accent }}>{item.par_level}</span>
                                 </p>
                               </div>
                             </div>
@@ -317,7 +361,8 @@ export function InventoryPage() {
                   </>
                 ) : (
                   <>
-                    💾 Save Count
+                    <Save size={16} />
+                    Save Count
                     {filledItems > 0 && <span style={{ marginLeft: 'auto', ...styles.badgeActive }}>{filledItems} filled</span>}
                   </>
                 )}

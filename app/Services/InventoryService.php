@@ -50,6 +50,8 @@ class InventoryService
                     'full_name'      => $item->full_name,
                     'unit'           => $item->unit,
                     'par_level'      => $item->par_level,
+                    'supplier_id'    => $item->supplier_id,
+                    'supplier_name'  => $item->supplier?->name,
                     'qty_restaurant' => $qtyRest,
                     'qty_office'     => $qtyOff,
                     'qty_total'      => $total,

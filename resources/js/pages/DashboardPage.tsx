@@ -91,7 +91,7 @@ export function DashboardPage() {
                 <table style={styles.table}>
                   <thead style={styles.tableHeader}>
                     <tr>
-                      {['Item', 'Rest', 'Office', 'Par', 'Need', 'Unit'].map((h, i) => (
+                      {['Item', 'Rest', 'Office', 'Must Have', 'Need', 'Unit'].map((h, i) => (
                         <th key={h} style={{ ...styles.tableHeaderCell, textAlign: i > 0 ? 'center' : 'left' }}>{h}</th>
                       ))}
                     </tr>
